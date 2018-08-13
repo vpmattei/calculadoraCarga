@@ -13,7 +13,7 @@ import Application.Parametros;
 
 @SuppressWarnings("serial")
 @WebServlet("/calculadoraCarga")
-public class calculadoraCarga extends HttpServlet {
+public class CalculadoraCarga extends HttpServlet {
 	
 	public void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException,
@@ -22,47 +22,31 @@ public class calculadoraCarga extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		//Iniciando parâmetros
-		double distPav, distSemPav, ton = 0;
-		boolean camBau, camCac, carreta;
+		double distanciaPavimento = 0;
+		double distanciaSemPavimento = 0;
+		double toneladas = 0;
+		
+		boolean caminhaoBau = false;
+		boolean caminhaoCacamba = false;
+		boolean carreta = false;
 		
 		//Distância percorrida
-		if(request.getParameter("kmPav") != ""){
-			if(Double.parseDouble(request.getParameter("kmPav"))<0){
-				out.println("A distância precisa ter um valor positivo ou igual a zero.<br>");
-				return;
-			} else{
-				distPav = Double.parseDouble(request.getParameter("kmPav"));
-			}
-		} else {
-			distPav = 0;
-		}
-		
-		if(request.getParameter("kmSPav") != ""){
-			if(Double.parseDouble(request.getParameter("kmSPav"))<0){
-				out.println("A distância precisa ter um valor positivo ou igual a zero.<br>");
-				return;
-			} else{
-				distSemPav = Double.parseDouble(request.getParameter("kmSPav"));
-			}
-		} else {
-			distSemPav = 0;
-		}
+		pegarParametroDouble("kmPav", distanciaPavimento);
+		pegarParametroDouble("kmSPav", distanciaSemPavimento);
 		
 		//Carga transportada
-		if(request.getParameter("ton") != ""){
-			ton = Double.parseDouble(request.getParameter("ton"));
-		}
+		pegarParametroDouble("ton", toneladas);
 		
 		//Veículo utilizado
-		camBau = request.getParameter("veiculo").equals("camBau");
-		camCac = request.getParameter("veiculo").equals("camCac");
-		carreta = request.getParameter("veiculo").equals("carreta");	
+		pegarParametroBoolean("camBau", caminhaoBau);
+		pegarParametroBoolean("camCac", caminhaoCacamba);
+		pegarParametroBoolean("carreta", carreta);	
 		
 		//Monta uma nova rota
 		Parametros parametro = new Parametros();
-		parametro.SetDist(distPav, distSemPav);
-		parametro.SetVeiculo(camBau, camCac, carreta);
-		parametro.SetToneladas(ton);
+		parametro.setDistancia(distanciaPavimento, distanciaSemPavimento);
+		parametro.setVeiculo(caminhaoBau, caminhaoCacamba, carreta);
+		parametro.setToneladas(toneladas);
 		
 		//imprime o valor total
 		out.println("<html>");
@@ -71,5 +55,37 @@ public class calculadoraCarga extends HttpServlet {
 		out.println("</body>");
 		out.println("</html>");
 		
+	}
+	
+	//Método para pegar parametros double com chaves de segurança
+	@SuppressWarnings("null")
+	public void pegarParametroDouble(String parametro, double valor) 
+			throws ServletException,
+			IOException{
+		
+		HttpServletRequest request = null;
+		HttpServletResponse response = null;
+		
+		PrintWriter out = response.getWriter();
+		
+		if(request.getParameter(parametro) != ""){
+			if(Double.parseDouble(request.getParameter(parametro))<0){
+				out.println("A distância precisa ter um valor positivo ou igual a zero.<br>");
+				return;
+			} else{
+				valor = Double.parseDouble(request.getParameter(parametro));
+			}
+		} else {
+			valor = 0;
+		}
+	}
+	
+	//Método para pegar parametros boolean
+	@SuppressWarnings("null")
+	public void pegarParametroBoolean(String parametro, boolean bool){
+		
+		HttpServletRequest request = null;
+		
+		bool = request.getParameter("veiculo").equals(parametro);
 	}
 }

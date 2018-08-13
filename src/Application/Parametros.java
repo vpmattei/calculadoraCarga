@@ -6,32 +6,37 @@ public class Parametros {
 	
 	CalcularParametros calculo = new CalcularParametros();
 	
-	private double distPav, distSemPav, ton;
-	private boolean camBau = false, camCac = false, carreta = false;
+	private double distanciaPavimento;
+	private double distanciaSemPavimento;
+	private double toneladas;
 	
-	public void SetDist(double distPav, double distSemPav){
-		this.distPav = distPav;
-		this.distSemPav = distSemPav;
-		calculo.SetPrecoDist(this.distPav, this.distSemPav);
+	private boolean caminhaoBau;
+	private boolean caminhaoCacamba;
+	private boolean carreta;
+	
+	public void setDistancia(double distPav, double distSemPav){
+		distanciaPavimento = distPav;
+		distanciaSemPavimento = distSemPav;
+		calculo.setPrecoDistancia(distanciaPavimento, distanciaSemPavimento);
 	}
 
-	public void SetToneladas(double ton) {
-		this.ton = ton;
-		calculo.SetPrecoToneladas(this.ton);
+	public void setToneladas(double ton) {
+		toneladas = ton;
+		calculo.setPrecoToneladas(toneladas);
 	}
 
-	public void SetVeiculo(boolean camBau, boolean camCac, boolean carreta){
+	public void setVeiculo(boolean camBau, boolean camCac, boolean carreta){
 		if(camBau){
-			this.camBau = camBau;
+			caminhaoBau = camBau;
 		} else if(camCac){
-			this.camCac = camCac;
+			caminhaoCacamba = camCac;
 		} else if(carreta){
 			this.carreta = carreta;
 		}
-		calculo.SetPrecoVeiculo(this.camBau, this.camCac, this.carreta);
+		calculo.setPrecoVeiculo(caminhaoBau, caminhaoCacamba, this.carreta);
 	}
 	
 	public double GetValorTotal(){
-		return calculo.GetValorTotal();
+		return calculo.getValorTotal();
 	}
 }
