@@ -36,7 +36,7 @@ public class Parametros {
 		calculo.setPrecoVeiculo(caminhaoBau, caminhaoCacamba, this.carreta);
 	}
 	
-	public double GetValorTotal(){
+	public double getValorTotal(){
 		return calculo.getValorTotal();
 	}
 }

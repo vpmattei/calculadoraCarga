@@ -30,62 +30,63 @@ public class CalculadoraCarga extends HttpServlet {
 		boolean caminhaoCacamba = false;
 		boolean carreta = false;
 		
+		
 		//Distância percorrida
-		pegarParametroDouble("kmPav", distanciaPavimento);
-		pegarParametroDouble("kmSPav", distanciaSemPavimento);
+		verificarErroInput(request, response, "kmPav", distanciaPavimento);
+		verificarErroInput(request, response, "kmSPav", distanciaSemPavimento);
+		distanciaPavimento = getParametroDouble(request, "kmPav");
+		distanciaSemPavimento = getParametroDouble(request, "kmSPav");
 		
 		//Carga transportada
-		pegarParametroDouble("ton", toneladas);
+		verificarErroInput(request, response, "ton", toneladas);
+		toneladas = getParametroDouble(request, "ton");
 		
 		//Veículo utilizado
-		pegarParametroBoolean("camBau", caminhaoBau);
-		pegarParametroBoolean("camCac", caminhaoCacamba);
-		pegarParametroBoolean("carreta", carreta);	
+		caminhaoBau = request.getParameter("veiculo").equals("camBau");
+		caminhaoCacamba = request.getParameter("veiculo").equals("camCac");
+		carreta = request.getParameter("veiculo").equals("carreta");
 		
-		//Monta uma nova rota
+		//Salva os parametros
 		Parametros parametro = new Parametros();
 		parametro.setDistancia(distanciaPavimento, distanciaSemPavimento);
 		parametro.setVeiculo(caminhaoBau, caminhaoCacamba, carreta);
 		parametro.setToneladas(toneladas);
 		
-		//imprime o valor total
+		//Imprime o valor total
 		out.println("<html>");
 		out.println("<body>");
-		out.println("O valor total da rota é de: " + parametro.GetValorTotal() + " R$");
+		out.println("<h1>O valor total da rota é de: " + parametro.getValorTotal() + " R$</h1>");
 		out.println("</body>");
 		out.println("</html>");
 		
 	}
 	
-	//Método para pegar parametros double com chaves de segurança
-	@SuppressWarnings("null")
-	public void pegarParametroDouble(String parametro, double valor) 
-			throws ServletException,
-			IOException{
-		
-		HttpServletRequest request = null;
-		HttpServletResponse response = null;
-		
-		PrintWriter out = response.getWriter();
-		
-		if(request.getParameter(parametro) != ""){
-			if(Double.parseDouble(request.getParameter(parametro))<0){
-				out.println("A distância precisa ter um valor positivo ou igual a zero.<br>");
-				return;
-			} else{
-				valor = Double.parseDouble(request.getParameter(parametro));
-			}
-		} else {
-			valor = 0;
-		}
+	//Método para pegar parametros double
+	public double getParametroDouble(HttpServletRequest request, String parametro){
+		return Double.parseDouble(request.getParameter(parametro));
 	}
 	
-	//Método para pegar parametros boolean
-	@SuppressWarnings("null")
-	public void pegarParametroBoolean(String parametro, boolean bool){
-		
-		HttpServletRequest request = null;
-		
-		bool = request.getParameter("veiculo").equals(parametro);
+	//Método para pegar parametros String
+	public String getParametro(HttpServletRequest request, String parametro){
+		return request.getParameter(parametro);
+	}
+	
+	//Método println para Http
+	public void println(HttpServletResponse response,  String string) throws IOException{
+		PrintWriter out = response.getWriter();
+		out.println(string);
+	}
+	
+	//Método para verificar se usuário não digitou errado
+	public void verificarErroInput(HttpServletRequest request, HttpServletResponse response,  String parametro, double valor) throws IOException{
+		if(request.getParameter(parametro) != ""){
+			if(getParametroDouble(request, parametro)<0){
+				println(response, "A distância precisa ter um valor positivo ou igual a zero.");
+				return;
+			}
+		} else {
+			println(response, "Nenhum valor inserido.");
+			return;
+		}
 	}
 }
