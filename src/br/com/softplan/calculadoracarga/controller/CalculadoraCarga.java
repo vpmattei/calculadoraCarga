@@ -57,9 +57,8 @@ public class CalculadoraCarga extends HttpServlet {
 		parametro.setDistancia(distanciaPavimento, distanciaSemPavimento);
 		parametro.setVeiculo(caminhaoBau, caminhaoCacamba, carreta, mendigoCarregador);
 		parametro.setToneladas(toneladas);
-		calculadora.setPrecos();
+		calculadora.setParametros(parametro);
 		calculadora.setValorTotal();
-		//TODO calculadora.setParametros..
 		
 		//Imprime o valor total
 		out.println("<html>");
@@ -67,7 +66,7 @@ public class CalculadoraCarga extends HttpServlet {
 		out.println("<title>Calculadora de Preço de Carga</title>");
 		out.println("</head>");
 		out.println("<body>");
-		out.println("<h2>O valor total da rota é de: " + calculadora.getValorTotal() + " R$</h2>"); //TODO retornar valor total
+		out.println("<h2>O valor total da rota é de: " + calculadora.getValorTotal() + " R$</h2>");
 		out.println("</body>");
 		out.println("</html>");
 		

@@ -9,32 +9,31 @@ public class CalculadoraParametros extends Parametros{
 	private double precoToneladas;
 	private double valorTotal = 0;
 	
-	public void setPrecos(){
-		setPrecoDistancia();
-		setPrecoVeiculo();
-		setPrecoToneladas();
+	public void setParametros(Parametros parametros){
+		setPrecoDistancia(parametros.getDistanciaPavimento(), parametros.getDistanciaSemPavimento());
+		setPrecoVeiculo(parametros.getVeiculo());
+		setPrecoToneladas(parametros.getToneladas());
 	}
 	
 	//Distancia pavimentada tem taxa de 0,54R$/km e não pavimentada 0,62R$/km
-	public void setPrecoDistancia() {
-		this.precoDistancia = getDistanciaPavimento()*0.54 + getDistanciaSemPavimento()*0.62;
-		System.out.println("distancia pavimento(Calculadora): " + this.distanciaPavimento);
-		System.out.println("distancia sem pavimento(Calculadora): " + this.distanciaSemPavimento);
+	public void setPrecoDistancia(double distanciaPavimento, double distanciaSemPavimento) {
+		this.precoDistancia = distanciaPavimento*0.54 + distanciaSemPavimento*0.62;
+		System.out.println("distancia pavimento(Calculadora): " + distanciaPavimento);
+		System.out.println("distancia sem pavimento(Calculadora): " + distanciaSemPavimento);
 		System.out.println("preco distancia: " + this.precoDistancia);
 	}
 	
 	//Cada veículo tem uma taxa unica sobre o valor total
-	public void setPrecoVeiculo() {
-		Veiculo veiculo = new Veiculo();
+	public void setPrecoVeiculo(Veiculo veiculo) {
 		this.precoVeiculo = veiculo.getPrecoVeiculo();
 		System.out.println("preco veiculo: " + this.precoVeiculo);
 	}
 	
 	//Caso peso ultrapasse 5t, aplicar taxa de a cada tonelada a mais, adicionar 0,02R$/km
-	public void setPrecoToneladas() {
-		if(this.toneladas > 5){
-			this.toneladas = this.toneladas - 5;
-			this.precoToneladas = this.toneladas*0.02*(getDistanciaPavimento() + getDistanciaSemPavimento());
+	public void setPrecoToneladas(double toneladas) {
+		if(toneladas > 5){
+			toneladas = toneladas - 5;
+			this.precoToneladas = toneladas*0.02*(getDistanciaPavimento() + getDistanciaSemPavimento());
 		}
 		System.out.println("preco toneladas: " + this.precoToneladas);
 	}
