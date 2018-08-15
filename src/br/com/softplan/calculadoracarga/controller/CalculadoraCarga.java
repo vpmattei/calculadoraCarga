@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.com.softplan.calculadoracarga.application.Parametros;
+import br.com.softplan.calculadoracarga.domain.CalculadoraParametros;
 
 
 //Calculadora de preço de transporte
@@ -20,6 +21,8 @@ public class CalculadoraCarga extends HttpServlet {
 	public void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException,
 			IOException {
+		Parametros parametro = new Parametros();
+		CalculadoraParametros calculadora = new CalculadoraParametros();
 		
 		PrintWriter out = response.getWriter();
 	
@@ -48,12 +51,15 @@ public class CalculadoraCarga extends HttpServlet {
 		boolean caminhaoBau = request.getParameter("veiculo").equals("camBau");
 		boolean caminhaoCacamba = request.getParameter("veiculo").equals("camCac");
 		boolean carreta = request.getParameter("veiculo").equals("carreta");
+		boolean mendigoCarregador = request.getParameter("veiculo").equals("mendigo");
 		
 		//Salva os parametros
-		Parametros parametro = new Parametros();
 		parametro.setDistancia(distanciaPavimento, distanciaSemPavimento);
-		parametro.setVeiculo(caminhaoBau, caminhaoCacamba, carreta);
+		parametro.setVeiculo(caminhaoBau, caminhaoCacamba, carreta, mendigoCarregador);
 		parametro.setToneladas(toneladas);
+		calculadora.setPrecos();
+		calculadora.setValorTotal();
+		//TODO calculadora.setParametros..
 		
 		//Imprime o valor total
 		out.println("<html>");
@@ -61,7 +67,7 @@ public class CalculadoraCarga extends HttpServlet {
 		out.println("<title>Calculadora de Preço de Carga</title>");
 		out.println("</head>");
 		out.println("<body>");
-		out.println("<h2>O valor total da rota é de: " + parametro.getValorTotal() + " R$</h2>");
+		out.println("<h2>O valor total da rota é de: " + calculadora.getValorTotal() + " R$</h2>"); //TODO retornar valor total
 		out.println("</body>");
 		out.println("</html>");
 		

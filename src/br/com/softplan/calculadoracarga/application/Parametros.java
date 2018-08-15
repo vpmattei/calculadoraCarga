@@ -1,11 +1,12 @@
 package br.com.softplan.calculadoracarga.application;
- 
+
+import br.com.softplan.calculadoracarga.domain.Veiculo;
+
 //Classe para salvar parâmetros
 public class Parametros {
 	protected double distanciaPavimento;
 	protected double distanciaSemPavimento;
 	protected double toneladas;
-	protected double valorTotal = 0;
 	
 	protected boolean caminhaoBau;
 	protected boolean caminhaoCacamba;
@@ -14,36 +15,25 @@ public class Parametros {
 	public void setDistancia(double distanciaPavimento, double distanciaSemPavimento){
 		this.distanciaPavimento = distanciaPavimento;
 		this.distanciaSemPavimento = distanciaSemPavimento;
+		System.out.println("distancia pavimento: " + this.distanciaPavimento);
+		System.out.println("distancia sem pavimento: " + this.distanciaSemPavimento);
 	}
 	
-	protected double getDistanciaPavimento(){
+	public double getDistanciaPavimento(){
 		return this.distanciaPavimento;
 	}
 	
-	protected double getDistanciaSemPavimento(){
+	public double getDistanciaSemPavimento(){
 		return this.distanciaSemPavimento;
 	}
 
-	public void setVeiculo(boolean caminhaoBau, boolean caminhaoCacamba, boolean carreta){
-		if(caminhaoBau){
-			this.caminhaoBau = caminhaoBau;
-		} else if(caminhaoCacamba){
-			this.caminhaoCacamba = caminhaoCacamba;
-		} else if(carreta){
-			this.carreta = carreta;
-		}
+	public void setVeiculo(boolean caminhaoBau, boolean caminhaoCacamba, boolean carreta, boolean mendigoCarregador){
+		Veiculo veiculo = new Veiculo();
+		veiculo.setVeiculo(caminhaoBau, caminhaoCacamba, carreta, mendigoCarregador);
 	}
 	
 	public void setToneladas(double toneladas) {
 		this.toneladas = toneladas;
-	}
-	
-	
-	public void setValorTotal(double valorTotal){
-		this.valorTotal = valorTotal;
-	}
-	
-	public double getValorTotal(){
-		return this.valorTotal;
+		System.out.println("toneladas: " + this.toneladas);
 	}
 }
