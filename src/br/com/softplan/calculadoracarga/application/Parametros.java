@@ -1,42 +1,43 @@
 package br.com.softplan.calculadoracarga.application;
-
-import br.com.softplan.calculadoracarga.domain.CalculadoraParametros;
-
+ 
 //Classe para salvar parâmetros
 public class Parametros {
+	protected double distanciaPavimento;
+	protected double distanciaSemPavimento;
+	protected double toneladas;
+	protected double valorTotal = 0;
 	
-	CalculadoraParametros calculo = new CalculadoraParametros();
+	protected boolean caminhaoBau;
+	protected boolean caminhaoCacamba;
+	protected boolean carreta;
 	
-	private double distanciaPavimento;
-	private double distanciaSemPavimento;
-	private double toneladas;
-	private double valorTotal;
+	public void setDistancia(double distanciaPavimento, double distanciaSemPavimento){
+		this.distanciaPavimento = distanciaPavimento;
+		this.distanciaSemPavimento = distanciaSemPavimento;
+	}
 	
-	private boolean caminhaoBau;
-	private boolean caminhaoCacamba;
-	private boolean carreta;
+	protected double getDistanciaPavimento(){
+		return this.distanciaPavimento;
+	}
 	
-	public void setDistancia(double distPav, double distSemPav){
-		distanciaPavimento = distPav;
-		distanciaSemPavimento = distSemPav;
-		calculo.setPrecoDistancia(distanciaPavimento, distanciaSemPavimento);
+	protected double getDistanciaSemPavimento(){
+		return this.distanciaSemPavimento;
 	}
 
-	public void setVeiculo(boolean camBau, boolean camCac, boolean carreta){
-		if(camBau){
-			caminhaoBau = camBau;
-		} else if(camCac){
-			caminhaoCacamba = camCac;
+	public void setVeiculo(boolean caminhaoBau, boolean caminhaoCacamba, boolean carreta){
+		if(caminhaoBau){
+			this.caminhaoBau = caminhaoBau;
+		} else if(caminhaoCacamba){
+			this.caminhaoCacamba = caminhaoCacamba;
 		} else if(carreta){
 			this.carreta = carreta;
 		}
-		calculo.setPrecoVeiculo(caminhaoBau, caminhaoCacamba, this.carreta);
 	}
 	
-	public void setToneladas(double ton) {
-		toneladas = ton;
-		calculo.setPrecoToneladas(toneladas);
+	public void setToneladas(double toneladas) {
+		this.toneladas = toneladas;
 	}
+	
 	
 	public void setValorTotal(double valorTotal){
 		this.valorTotal = valorTotal;

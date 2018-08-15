@@ -2,45 +2,56 @@ package br.com.softplan.calculadoracarga.domain;
 
 import br.com.softplan.calculadoracarga.application.Parametros;
 
-public class CalculadoraParametros {
+public class CalculadoraParametros extends Parametros{
 	
-	private double valorTotal;
 	private double distanciaTotal;
 	private double precoDistancia;
+	private double precoVeiculo = 1;
 	private double precoToneladas;
 	
+	public void setDistanciaTotal(){
+		this.distanciaTotal = getDistanciaPavimento() + getDistanciaSemPavimento();
+	}
+	
+	public double getDistanciaTotal(){
+		return this.distanciaTotal;
+	}
+	
 	//Distancia pavimentada tem taxa de 0,54R$/km e não pavimentada 0,62R$/km
-	public void setPrecoDistancia(double distPav, double distSemPav) {
-		distanciaTotal = distPav + distSemPav;
-		precoDistancia = distPav*0.54 + distSemPav*0.62;
-		valorTotal = valorTotal + precoDistancia;
+	public void setPrecoDistancia() {
+		this.precoDistancia = getDistanciaPavimento()*0.54 + getDistanciaSemPavimento()*0.62;
 	}
 	
 	//Cada veículo tem uma taxa unica sobre o valor total
-	public void setPrecoVeiculo(boolean camBau, boolean camCac, boolean carreta) {
-		if(camBau) {
-	        valorTotal = valorTotal*1;
+	public void setPrecoVeiculo() {
+		if(this.caminhaoBau) {
+	        this.precoVeiculo = this.precoVeiculo*1;
 	    }
-	    else if(camCac) {
-	        valorTotal = valorTotal*1.05;
+	    else if(this.caminhaoCacamba) {
+	    	this.precoVeiculo = this.precoVeiculo*1.05;
 	    }
-	    else if(carreta) {
-	        valorTotal = valorTotal*1.12;
+	    else if(this.carreta) {
+	    	this.precoVeiculo = this.precoVeiculo*1.12;
 	    }
 	}
 	
 	//Caso peso ultrapasse 5t, aplicar taxa de a cada tonelada a mais, adicionar 0,02R$/km
-	public void setPrecoToneladas(double ton) {
-		if(ton > 5){
-			ton = ton - 5;
-			precoToneladas = ton*0.02*(distanciaTotal);
-			valorTotal = valorTotal + precoToneladas;
+	public void setPrecoToneladas() {
+		if(this.toneladas > 5){
+			this.toneladas = this.toneladas - 5;
+			this.precoToneladas = this.toneladas*0.02*(this.distanciaTotal);
 		}
 		setValorTotal();
 	}
-
-	public void setValorTotal() {
-		Parametros parametro = new Parametros();
-		parametro.setValorTotal(valorTotal);
+	
+	public void setValorTotal(){
+		this.valorTotal += this.precoDistancia;
+		this.valorTotal = this.valorTotal*this.precoVeiculo;
+		this.valorTotal += this.precoToneladas;
+		super.setValorTotal(this.valorTotal);
+	}
+	
+	public double getValorTotal(){
+		return this.valorTotal;
 	}
 }
