@@ -15,8 +15,6 @@ public class Parametros {
 	public void setDistancia(double distanciaPavimento, double distanciaSemPavimento){
 		this.distanciaPavimento = distanciaPavimento;
 		this.distanciaSemPavimento = distanciaSemPavimento;
-		System.out.println("distancia pavimento: " + this.distanciaPavimento);
-		System.out.println("distancia sem pavimento: " + this.distanciaSemPavimento);
 	}
 	
 	public double getDistanciaPavimento(){
@@ -37,7 +35,6 @@ public class Parametros {
 	
 	public void setToneladas(double toneladas) {
 		this.toneladas = toneladas;
-		System.out.println("toneladas: " + this.toneladas);
 	}
 	
 	public double getToneladas(){

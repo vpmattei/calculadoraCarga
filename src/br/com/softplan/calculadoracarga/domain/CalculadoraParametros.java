@@ -18,15 +18,11 @@ public class CalculadoraParametros extends Parametros{
 	//Distancia pavimentada tem taxa de 0,54R$/km e não pavimentada 0,62R$/km
 	public void setPrecoDistancia(double distanciaPavimento, double distanciaSemPavimento) {
 		this.precoDistancia = distanciaPavimento*0.54 + distanciaSemPavimento*0.62;
-		System.out.println("distancia pavimento(Calculadora): " + distanciaPavimento);
-		System.out.println("distancia sem pavimento(Calculadora): " + distanciaSemPavimento);
-		System.out.println("preco distancia: " + this.precoDistancia);
 	}
 	
 	//Cada veículo tem uma taxa unica sobre o valor total
 	public void setPrecoVeiculo(Veiculo veiculo) {
 		this.precoVeiculo = veiculo.getPrecoVeiculo();
-		System.out.println("preco veiculo: " + this.precoVeiculo);
 	}
 	
 	//Caso peso ultrapasse 5t, aplicar taxa de a cada tonelada a mais, adicionar 0,02R$/km
@@ -35,7 +31,6 @@ public class CalculadoraParametros extends Parametros{
 			toneladas = toneladas - 5;
 			this.precoToneladas = toneladas*0.02*(getDistanciaPavimento() + getDistanciaSemPavimento());
 		}
-		System.out.println("preco toneladas: " + this.precoToneladas);
 	}
 	
 	public void setValorTotal(){
