@@ -10,8 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.com.softplan.calculadoracarga.application.Parametros;
-import br.com.softplan.calculadoracarga.domain.CalculadoraParametros;
-
+import br.com.softplan.calculadoracarga.domain.*;
 
 //Calculadora de preço de transporte
 @SuppressWarnings("serial")
@@ -48,14 +47,33 @@ public class CalculadoraCarga extends HttpServlet {
 		}
 		
 		//Veículo utilizado
-		boolean caminhaoBau = request.getParameter("veiculo").equals("camBau");
-		boolean caminhaoCacamba = request.getParameter("veiculo").equals("camCac");
-		boolean carreta = request.getParameter("veiculo").equals("carreta");
-		boolean mendigoCarregador = request.getParameter("veiculo").equals("mendigo");
+		String veiculoSelecionado = request.getParameter("veiculo");
+		boolean caminhaoBau = veiculoSelecionado.equals("caminhaoBau");
+		boolean caminhaoCacamba = veiculoSelecionado.equals("caminhaoCacamba");
+		boolean carreta = veiculoSelecionado.equals("carreta");
+		boolean mendigoCarregador = veiculoSelecionado.equals("mendigo");
+		boolean jumentoCarregador = veiculoSelecionado.equals("jumento");
+		boolean carteiro = veiculoSelecionado.equals("carteiro");
 		
 		//Salva os parametros
 		parametro.setDistancia(distanciaPavimento, distanciaSemPavimento);
-		parametro.setVeiculo(caminhaoBau, caminhaoCacamba, carreta, mendigoCarregador);
+		
+		Veiculo veiculo = null;
+		if (caminhaoBau) {
+			veiculo = new CaminhaoBau();
+		} else if (caminhaoCacamba) {
+			veiculo = new CaminhaoCacamba();
+		} else if (carreta) {
+			veiculo = new Carreta();
+		} else if (mendigoCarregador) {
+			veiculo = new MendigoCarregador();
+		} else if (jumentoCarregador) {
+			veiculo = new JumentoCarregador();
+		} else if (carteiro) {
+			veiculo = new Carteiro();
+		}
+		
+		parametro.setVeiculo(veiculo);
 		parametro.setToneladas(toneladas);
 		calculadora.setParametros(parametro);
 		calculadora.setValorTotal();

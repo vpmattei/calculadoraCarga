@@ -12,6 +12,8 @@ public class Parametros {
 	protected boolean caminhaoCacamba;
 	protected boolean carreta;
 	
+	private Veiculo veiculo;
+	
 	public void setDistancia(double distanciaPavimento, double distanciaSemPavimento){
 		this.distanciaPavimento = distanciaPavimento;
 		this.distanciaSemPavimento = distanciaSemPavimento;
@@ -24,9 +26,9 @@ public class Parametros {
 	public double getDistanciaSemPavimento(){
 		return this.distanciaSemPavimento;
 	}
-	Veiculo veiculo = new Veiculo();
-	public void setVeiculo(boolean caminhaoBau, boolean caminhaoCacamba, boolean carreta, boolean mendigoCarregador){
-		veiculo.setVeiculo(caminhaoBau, caminhaoCacamba, carreta, mendigoCarregador);
+	
+	public void setVeiculo(Veiculo veiculo){
+		this.veiculo = veiculo;
 	}
 	
 	public Veiculo getVeiculo(){
