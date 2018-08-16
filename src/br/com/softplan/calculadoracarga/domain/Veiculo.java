@@ -1,6 +1,6 @@
 package br.com.softplan.calculadoracarga.domain;
 
-public abstract class Veiculo {
+public interface Veiculo {
 	
-	public abstract double getPrecoVeiculo();
+	double getPrecoVeiculo();
 }

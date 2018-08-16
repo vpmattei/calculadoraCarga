@@ -4,8 +4,8 @@ import br.com.softplan.calculadoracarga.domain.Veiculo;
 
 //Classe para salvar parâmetros
 public class Parametros {
-	protected double distanciaPavimento;
-	protected double distanciaSemPavimento;
+	protected double distanciaPavimentada;
+	protected double distanciaNaoPavimentada;
 	protected double toneladas;
 	
 	protected boolean caminhaoBau;
@@ -14,17 +14,17 @@ public class Parametros {
 	
 	private Veiculo veiculo;
 	
-	public void setDistancia(double distanciaPavimento, double distanciaSemPavimento){
-		this.distanciaPavimento = distanciaPavimento;
-		this.distanciaSemPavimento = distanciaSemPavimento;
+	public void setDistancia(double distanciaPavimentada, double distanciaNaoPavimentada){
+		this.distanciaPavimentada = distanciaPavimentada;
+		this.distanciaNaoPavimentada = distanciaNaoPavimentada;
 	}
 	
-	public double getDistanciaPavimento(){
-		return this.distanciaPavimento;
+	public double getDistanciaPavimentada(){
+		return this.distanciaPavimentada;
 	}
 	
-	public double getDistanciaSemPavimento(){
-		return this.distanciaSemPavimento;
+	public double getDistanciaNaoPavimentada(){
+		return this.distanciaNaoPavimentada;
 	}
 	
 	public void setVeiculo(Veiculo veiculo){

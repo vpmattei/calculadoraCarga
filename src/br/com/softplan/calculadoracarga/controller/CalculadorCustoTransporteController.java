@@ -10,30 +10,37 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.com.softplan.calculadoracarga.application.Parametros;
-import br.com.softplan.calculadoracarga.domain.*;
+import br.com.softplan.calculadoracarga.domain.CalculadorCustoTransporte;
+import br.com.softplan.calculadoracarga.domain.CaminhaoBau;
+import br.com.softplan.calculadoracarga.domain.CaminhaoCacamba;
+import br.com.softplan.calculadoracarga.domain.Carreta;
+import br.com.softplan.calculadoracarga.domain.Carteiro;
+import br.com.softplan.calculadoracarga.domain.JumentoCarregador;
+import br.com.softplan.calculadoracarga.domain.MendigoCarregador;
+import br.com.softplan.calculadoracarga.domain.Veiculo;
 
 //Calculadora de preço de transporte
 @SuppressWarnings("serial")
 @WebServlet("/calculadoraCarga")
-public class CalculadoraCarga extends HttpServlet {
+public class CalculadorCustoTransporteController extends HttpServlet {
 	
 	public void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException,
 			IOException {
 		Parametros parametro = new Parametros();
-		CalculadoraParametros calculadora = new CalculadoraParametros();
+		CalculadorCustoTransporte calculadora = new CalculadorCustoTransporte();
 		
 		PrintWriter out = response.getWriter();
 	
 		//Distância percorrida usando método para retornar valor passado se não for vazio
-		double distanciaPavimento = retornarValorOuZero("kmPav", request);
-		double distanciaSemPavimento = retornarValorOuZero("kmSPav", request);
+		double distanciaPavimentada = retornarValorOuZero("kmPav", request);
+		double distanciaNaoPavimentada = retornarValorOuZero("kmSPav", request);
 		
-		if(distanciaPavimento<0){
+		if(distanciaPavimentada<0){
 			out.println("<html><body><h3>Quilômetros pavimentados inseridos precisam ser maior ou igual a zero.</h3></body></html>");
 			return;
 		}
-		if(distanciaSemPavimento<0){
+		if(distanciaNaoPavimentada<0){
 			out.println("<html><body><h3>Quilômetros sem pavimento inseridos precisam ser maior ou igual a zero.</h3></body></html>");
 			return;
 		}
@@ -55,9 +62,6 @@ public class CalculadoraCarga extends HttpServlet {
 		boolean jumentoCarregador = veiculoSelecionado.equals("jumento");
 		boolean carteiro = veiculoSelecionado.equals("carteiro");
 		
-		//Salva os parametros
-		parametro.setDistancia(distanciaPavimento, distanciaSemPavimento);
-		
 		Veiculo veiculo = null;
 		if (caminhaoBau) {
 			veiculo = new CaminhaoBau();
@@ -73,10 +77,11 @@ public class CalculadoraCarga extends HttpServlet {
 			veiculo = new Carteiro();
 		}
 		
+		//Salva os parametros
+		parametro.setDistancia(distanciaPavimentada, distanciaNaoPavimentada);
 		parametro.setVeiculo(veiculo);
 		parametro.setToneladas(toneladas);
 		calculadora.setParametros(parametro);
-		calculadora.setValorTotal();
 		
 		//Imprime o valor total
 		out.println("<html>");
@@ -84,7 +89,7 @@ public class CalculadoraCarga extends HttpServlet {
 		out.println("<title>Calculadora de Preço de Carga</title>");
 		out.println("</head>");
 		out.println("<body>");
-		out.println("<h2>O valor total da rota é de: " + calculadora.getValorTotal() + " R$</h2>");
+		out.println("<h2>O valor total da rota é de: " + calculadora.calcularValorTotal() + " R$</h2>");
 		out.println("</body>");
 		out.println("</html>");
 		
